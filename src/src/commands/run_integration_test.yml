@@ -1,0 +1,37 @@
+description: >
+  this command used to run integration tests
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+
+
+parameters:
+  test_suite_command: {type: string}
+  profile_key_name: {default: '', type: string}
+steps:
+- checkout
+- {run: 'echo ${service_account_json} > .service_account.json'}
+- {run: 'echo ${datafusion_account_json} > .datafusion_account_json'}
+- {run: 'echo ${dataproc_account_json} > .dataproc_account_json'}
+- {run: 'sudo chown -R circleci:circleci /usr/local/bin'}
+- {run: 'sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages'}
+- restore_cache: {key: 'deps9-{{ .Branch }}-{{ checksum "Pipfile" }}'}
+- run:
+    command: |
+      sudo pip install pipenv
+      pipenv install --dev
+- save_cache:
+    key: deps9-{{ .Branch }}-{{ checksum "Pipfile" }}
+    paths: [.venv, /usr/local/bin, /usr/local/lib/python3.6/site-packages]
+- run:
+    command: |
+      export compute_profile_key=<< parameters.profile_key_name >>
+      export matillion_username=${matillion_username}
+      export matillion_password=${matillion_password}
+      pipenv run pytest << parameters.test_suite_command >>
+- {run: rm .service_account.json}
+- {run: rm .datafusion_account_json}
+- {run: rm .dataproc_account_json}
+- store_test_results: {path: test-results}
+- store_artifacts: {path: reports/}
+- slack/status: {fail_only: false, webhook: '${SLACK_WEBHOOK}'}
+

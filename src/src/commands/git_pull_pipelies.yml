@@ -1,0 +1,18 @@
+description: >
+  this command can be used to fetch latest code to matillin namespace
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+
+parameters:
+  project_name: {type: string}
+  git_url: {default: '', type: string}
+  branch_name: {default: '', type: string}
+  matillion_url: {default: '', type: string}
+steps:
+- checkout
+- run:
+    command: |
+      export matillion_url=<< parameters.matillion_url >>
+      export matillion_username=${matillion_username}
+      export matillion_password=${matillion_password}
+      python .circleci/deploy_to_matillion.py << parameters.project_name >> uplight << parameters.git_url >> << parameters.branch_name >>
