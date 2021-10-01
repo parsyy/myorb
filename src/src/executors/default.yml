@@ -1,0 +1,6 @@
+description: >
+  docker image with python 3.7.9
+
+docker:
+  - image: circleci/python:3.7.9
+    environment: {PIPENV_VENV_IN_PROJECT: true}
