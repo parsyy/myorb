@@ -35,15 +35,12 @@ workflows:
                   - master
                   - main
     jobs:
-      - matillion_shared_jobs:
-          context:
-              - up_matillion_shared_jobs
+      - matillion_shared_jobs
+
 
   on-commit:
     jobs:
       - matillion_shared_jobs:
-          context:
-              - up_matillion_shared_jobs
           filters:
               branches:
                 only:
