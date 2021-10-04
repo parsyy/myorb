@@ -32,7 +32,8 @@ workflows:
           filters:
             branches:
               only:
-                - release_2.0.0
+                  - master
+                  - main
     jobs:
       - matillion_shared_jobs:
           context:
@@ -47,3 +48,4 @@ workflows:
               branches:
                 only:
                   - master
+                  - main
