@@ -48,3 +48,4 @@ workflows:
                   - circleci-editor/main
                   - master
                   - main
+                  - alpha
