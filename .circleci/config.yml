@@ -47,5 +47,7 @@ workflows:
           filters:
               branches:
                 only:
+                  - circleci-editor/master
+                  - circleci-editor/main
                   - master
                   - main
